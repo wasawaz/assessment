@@ -18,7 +18,7 @@ func main() {
 
 	pg, err := initDatabase()
 	if err != nil {
-		log.Fatalf("cannot connect to db cause %v", err)
+		log.Fatalf("cannot init db cause %v", err)
 	}
 	defer pg.Close()
 	httpServer := initHttpServer()
@@ -55,5 +55,15 @@ func initHttpServer() *httpserver.Server {
 func initDatabase() (*postgresql.PostgresqlDB, error) {
 	databaseConnectionString := os.Getenv("DATABASE_URL")
 	pg, err := postgresql.New(databaseConnectionString)
+	if err != nil {
+		return pg, err
+	}
+	_, err = pg.Db.Exec(`CREATE TABLE IF NOT EXISTS expenses (
+		id SERIAL PRIMARY KEY,
+		title TEXT,
+		amount FLOAT,
+		note TEXT,
+		tags TEXT[]
+	);`)
 	return pg, err
 }
