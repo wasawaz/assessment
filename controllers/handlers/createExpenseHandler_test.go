@@ -12,7 +12,8 @@ import (
 
 func TestCreateExpense(t *testing.T) {
 	// Setup
-	expenseJson := "{}"
+	expenseJson := `{"title":"strawberry smoothie","amount":79,"note":"night market promotion discount 10 bath","tags":["food","beverage"]}`
+	expectedExpenseJson := `{"title":"strawberry smoothie","amount":79,"note":"night market promotion discount 10 bath","tags":["food","beverage"]}` + "\n"
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPost, "/expenses", strings.NewReader(expenseJson))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
@@ -23,5 +24,6 @@ func TestCreateExpense(t *testing.T) {
 	// Assertions
 	if assert.NoError(t, h.CreateExpense(c)) {
 		assert.Equal(t, http.StatusCreated, rec.Code)
+		assert.Equal(t, expectedExpenseJson, rec.Body.String())
 	}
 }
