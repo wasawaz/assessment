@@ -11,7 +11,7 @@ import (
 func main() {
 	appPort := os.Getenv("PORT")
 	e := echo.New()
-	e.GET("/healtz", func(c echo.Context) error {
+	e.GET("/healthz", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 	httpserver.New(e, appPort)
