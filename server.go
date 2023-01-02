@@ -2,13 +2,13 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/wasawaz/assessment/controllers/router"
 	"github.com/wasawaz/assessment/pkg/httpserver"
 	"github.com/wasawaz/assessment/pkg/postgresql"
 )
@@ -24,9 +24,7 @@ func main() {
 	appPort := os.Getenv("PORT")
 	e := echo.New()
 	e.Use(middleware.Logger())
-	e.GET("/healthz", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+	router.New(e)
 	httpServer := httpserver.New(e, appPort)
 
 	// Waiting signal
