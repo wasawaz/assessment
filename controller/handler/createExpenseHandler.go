@@ -9,7 +9,7 @@ import (
 
 type CreateExpenseHandler struct{}
 
-type expense struct {
+type createExpense struct {
 	Title  string   `json:"title"`
 	Amount float32  `json:"amount"`
 	Note   string   `json:"note"`
@@ -21,7 +21,7 @@ func NewCreateExpenseHandler() *CreateExpenseHandler {
 }
 
 func (e *CreateExpenseHandler) CreateExpense(c echo.Context) error {
-	expense := &expense{}
+	expense := &createExpense{}
 	err := c.Bind(expense)
 	if err != nil {
 		log.Printf("cannot biding payload")
