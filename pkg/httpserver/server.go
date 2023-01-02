@@ -35,7 +35,16 @@ func New(echo *echo.Echo, port string) *Server {
 }
 
 func (s *Server) start(port string) {
-	s.server.Logger.Fatal(s.server.Start(s.port))
+	go func() {
+		s.notify <- s.server.Start(s.port)
+		close(s.notify)
+	}()
+
+}
+
+// Notify -.
+func (s *Server) Notify() <-chan error {
+	return s.notify
 }
 
 func (s *Server) Shutdown() error {
