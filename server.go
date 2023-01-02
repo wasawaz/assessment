@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/wasawaz/assessment/pkg/httpserver"
 	"github.com/wasawaz/assessment/pkg/postgresql"
 )
@@ -22,6 +23,7 @@ func main() {
 
 	appPort := os.Getenv("PORT")
 	e := echo.New()
+	e.Use(middleware.Logger())
 	e.GET("/healthz", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
