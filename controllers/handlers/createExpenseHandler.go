@@ -6,12 +6,12 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type ExpenseHandler struct{}
+type CreateExpenseHandler struct{}
 
-func newCreateExpenseHandler() *ExpenseHandler {
-	return &ExpenseHandler{}
+func NewCreateExpenseHandler() *CreateExpenseHandler {
+	return &CreateExpenseHandler{}
 }
 
-func (e *ExpenseHandler) createExpense(c echo.Context) error {
+func (e *CreateExpenseHandler) CreateExpense(c echo.Context) error {
 	return c.NoContent(http.StatusCreated)
 }

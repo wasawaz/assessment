@@ -1,13 +1,10 @@
 package router
 
 import (
-	"net/http"
-
 	"github.com/labstack/echo/v4"
+	handler "github.com/wasawaz/assessment/controllers/handlers"
 )
 
-func newExpenseRoute(e *echo.Echo) {
-	e.POST("/expenses", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+func newExpenseRoute(e *echo.Echo, createExpenseHandler *handler.CreateExpenseHandler) {
+	e.POST("/expenses", createExpenseHandler.CreateExpense)
 }

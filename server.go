@@ -8,24 +8,20 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	handler "github.com/wasawaz/assessment/controllers/handlers"
 	"github.com/wasawaz/assessment/controllers/router"
 	"github.com/wasawaz/assessment/pkg/httpserver"
 	"github.com/wasawaz/assessment/pkg/postgresql"
 )
 
 func main() {
-	databaseConnectionString := os.Getenv("DATABASE_URL")
-	pg, err := postgresql.New(databaseConnectionString)
+
+	pg, err := initDatabase()
 	if err != nil {
 		log.Fatalf("cannot connect to db cause %v", err)
 	}
 	defer pg.Close()
-
-	appPort := os.Getenv("PORT")
-	e := echo.New()
-	e.Use(middleware.Logger())
-	router.New(e)
-	httpServer := httpserver.New(e, appPort)
+	httpServer := initHttpServer()
 
 	// Waiting signal
 	interrupt := make(chan os.Signal, 1)
@@ -34,7 +30,7 @@ func main() {
 	select {
 	case s := <-interrupt:
 		log.Print("app - Run - signal: " + s.String())
-	case err = <-httpServer.Notify():
+	case err := <-httpServer.Notify():
 		log.Fatalf("app - Run - httpServer.Notify: %v", err)
 	}
 
@@ -44,4 +40,20 @@ func main() {
 		log.Fatalf("app - Run - httpServer.Shutdown: %v", err)
 	}
 
+}
+
+func initHttpServer() *httpserver.Server {
+	appPort := os.Getenv("PORT")
+	e := echo.New()
+	e.Use(middleware.Logger())
+	createExpenseHandler := handler.NewCreateExpenseHandler()
+	router.New(e, createExpenseHandler)
+	httpServer := httpserver.New(e, appPort)
+	return httpServer
+}
+
+func initDatabase() (*postgresql.PostgresqlDB, error) {
+	databaseConnectionString := os.Getenv("DATABASE_URL")
+	pg, err := postgresql.New(databaseConnectionString)
+	return pg, err
 }

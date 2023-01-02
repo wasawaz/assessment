@@ -18,10 +18,10 @@ func TestCreateExpense(t *testing.T) {
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	h := newCreateExpenseHandler()
+	h := NewCreateExpenseHandler()
 
 	// Assertions
-	if assert.NoError(t, h.createExpense(c)) {
+	if assert.NoError(t, h.CreateExpense(c)) {
 		assert.Equal(t, http.StatusCreated, rec.Code)
 	}
 }
