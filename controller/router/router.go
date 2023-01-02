@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	handler "github.com/wasawaz/assessment/controllers/handlers"
+	handler "github.com/wasawaz/assessment/controller/handler"
 )
 
 func New(e *echo.Echo, createExpenseHandler *handler.CreateExpenseHandler) {

@@ -8,8 +8,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	handler "github.com/wasawaz/assessment/controllers/handlers"
-	"github.com/wasawaz/assessment/controllers/router"
+	handler "github.com/wasawaz/assessment/controller/handler"
+	"github.com/wasawaz/assessment/controller/router"
 	"github.com/wasawaz/assessment/pkg/httpserver"
 	"github.com/wasawaz/assessment/pkg/postgresql"
 )
