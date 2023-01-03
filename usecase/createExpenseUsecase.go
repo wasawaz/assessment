@@ -9,15 +9,18 @@ type ICreateExpenseUsecase interface {
 	Execute(expense *entity.Expense) error
 }
 
-type CreateExpenseUsecase struct {
+type createExpenseUsecase struct {
 	expenseRepository repository.IExpenseRepository
 }
 
-func NewCreateExpenseUsecase(expenseRepository repository.IExpenseRepository) *CreateExpenseUsecase {
-	return &CreateExpenseUsecase{expenseRepository}
+func NewCreateExpenseUsecase(expenseRepository repository.IExpenseRepository) *createExpenseUsecase {
+	return &createExpenseUsecase{expenseRepository}
 }
 
-func (u *CreateExpenseUsecase) Execute(expense *entity.Expense) error {
-	expense.Id = 1
+func (u *createExpenseUsecase) Execute(expense *entity.Expense) error {
+	err := u.expenseRepository.Add(expense)
+	if err != nil {
+		return err
+	}
 	return nil
 }
