@@ -12,16 +12,24 @@ import (
 	"github.com/wasawaz/assessment/controller/router"
 	"github.com/wasawaz/assessment/pkg/httpserver"
 	"github.com/wasawaz/assessment/pkg/postgresql"
+	"github.com/wasawaz/assessment/repository"
+	"github.com/wasawaz/assessment/usecase"
 )
 
 func main() {
 
+	// init database
 	pg, err := initDatabase()
 	if err != nil {
 		log.Fatalf("cannot init db cause %v", err)
 	}
 	defer pg.Close()
-	httpServer := initHttpServer()
+
+	expenseRepository := repository.NewExpenseRepository(pg)
+	createExpenseUsecase := usecase.NewCreateExpenseUsecase(expenseRepository)
+
+	// init httpserver
+	httpServer := initHttpServer(createExpenseUsecase)
 
 	// Waiting signal
 	interrupt := make(chan os.Signal, 1)
@@ -42,11 +50,11 @@ func main() {
 
 }
 
-func initHttpServer() *httpserver.Server {
+func initHttpServer(createExpenseUsecase usecase.ICreateExpenseUsecase) *httpserver.Server {
 	appPort := os.Getenv("PORT")
 	e := echo.New()
 	e.Use(middleware.Logger())
-	createExpenseHandler := handler.NewCreateExpenseHandler()
+	createExpenseHandler := handler.NewCreateExpenseHandler(createExpenseUsecase)
 	router.New(e, createExpenseHandler)
 	httpServer := httpserver.New(e, appPort)
 	return httpServer
