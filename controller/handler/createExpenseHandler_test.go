@@ -8,18 +8,25 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
+	"github.com/wasawaz/assessment/entity"
 )
+
+type mockCreateExpenseUsecase struct{}
+
+func (u *mockCreateExpenseUsecase) Execute(expense *entity.Expense) error {
+	return nil
+}
 
 func TestCreateExpense(t *testing.T) {
 	// Setup
 	expenseJson := `{"title":"strawberry smoothie","amount":79,"note":"night market promotion discount 10 bath","tags":["food","beverage"]}`
-	expectedExpenseJson := `{"title":"strawberry smoothie","amount":79,"note":"night market promotion discount 10 bath","tags":["food","beverage"]}` + "\n"
+	expectedExpenseJson := `{"id":0,"title":"strawberry smoothie","amount":79,"note":"night market promotion discount 10 bath","tags":["food","beverage"]}` + "\n"
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPost, "/expenses", strings.NewReader(expenseJson))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	h := NewCreateExpenseHandler()
+	h := NewCreateExpenseHandler(&mockCreateExpenseUsecase{})
 
 	// Assertions
 	if assert.NoError(t, h.CreateExpense(c)) {
