@@ -32,3 +32,20 @@ func TestShouldAddExpense(t *testing.T) {
 	assert.NotEqual(t, 0, mockExpense.Id, "expect expenseId equal 0")
 
 }
+
+func TestShouldGetExpense(t *testing.T) {
+
+	expenseId := 1
+	db, mock, err := sqlmock.New()
+	assert.Nil(t, err, "an error was not expected when opening a stub database connection")
+	defer db.Close()
+	mockDB := &postgresql.PostgresqlDB{Db: db}
+	expenseRepository := NewExpenseRepository(mockDB)
+
+	mockRows := sqlmock.NewRows([]string{"id", "title", "amount", "note", "tags"}).AddRow(1, "mock title", 200.0, "mock note", pq.Array([]string{"mock"}))
+	mock.ExpectPrepare("SELECT (.+) EXPENSES").ExpectQuery().WithArgs(expenseId).WillReturnRows(mockRows)
+	queryExpense, err := expenseRepository.Get(expenseId)
+	assert.Nil(t, err, "an error was not expected when add new expense")
+	assert.Equal(t, 1, queryExpense.Id, "expect expenseId not equal 1")
+
+}
