@@ -29,9 +29,10 @@ func main() {
 
 	expenseRepository := repository.NewExpenseRepository(pg)
 	createExpenseUsecase := usecase.NewCreateExpenseUsecase(expenseRepository)
+	getExpenseUsecase := usecase.NewGetExpenseUsecase(expenseRepository)
 
 	// init httpserver
-	httpServer := initHttpServer(createExpenseUsecase)
+	httpServer := initHttpServer(createExpenseUsecase, getExpenseUsecase)
 
 	// Waiting signal
 	interrupt := make(chan os.Signal, 1)
@@ -52,13 +53,13 @@ func main() {
 
 }
 
-func initHttpServer(createExpenseUsecase usecase.ICreateExpenseUsecase) *httpserver.Server {
+func initHttpServer(createExpenseUsecase usecase.ICreateExpenseUsecase, getExpenseUsecase usecase.IGetExpenseUsecase) *httpserver.Server {
 	appPort := os.Getenv("PORT")
 	e := echo.New()
 	e.Validator = customvalidator.NewCustomValidator(validator.New())
 	e.Use(middleware.Logger())
 	createExpenseHandler := handler.NewCreateExpenseHandler(createExpenseUsecase)
-	getExpenseHandler := handler.NewGetExpenseHandler()
+	getExpenseHandler := handler.NewGetExpenseHandler(getExpenseUsecase)
 	router.New(e, createExpenseHandler, getExpenseHandler)
 	httpServer := httpserver.New(e, appPort)
 	return httpServer
