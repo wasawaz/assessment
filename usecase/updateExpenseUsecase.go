@@ -18,7 +18,11 @@ func NewUpdateExpenseUsecase(expenseRepository repository.IExpenseRepository) *u
 }
 
 func (u *updateExpenseUsecase) Execute(expense entity.Expense) error {
-	err := u.expenseRepository.Update(expense)
+	_, err := u.expenseRepository.Get(expense.Id)
+	if err != nil {
+		return err
+	}
+	err = u.expenseRepository.Update(expense)
 	if err != nil {
 		return err
 	}
