@@ -35,3 +35,14 @@ GET {{apiBaseUri}}/expenses/54
 
 ### Get Expense with strinng
 GET {{apiBaseUri}}/expenses/mdsmksl
+
+### Update Expense with Id
+PUT {{apiBaseUri}}/expenses/1
+Content-Type: application/json
+
+{
+	"title": "strawberry cheese cake",
+	"amount": 50,
+	"note": "",
+	"tags": ["food", "cake"]
+}

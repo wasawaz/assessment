@@ -1,0 +1,37 @@
+@startuml
+
+title: Create new expense
+actor Client
+participant API
+database Database 
+
+Client -> API: [PUT] /api/expenses/1 \n body: updateExpense {...}
+activate API
+API -> API: Validation payload
+alt Invalid Payload
+API -> Client: 400 Bad Request
+else Valid Payload
+API -> API: Validation route param not int
+alt Invalid Route param
+API -> Client: 404 Not Found
+else
+API -> Database: execute select expense by id
+activate Database
+Database --> API: expense result
+deactivate Database
+
+alt expense not exist
+API -> Client: 404 Not Found
+else
+API -> Database: execute update SQL expense
+activate Database
+Database --> API: execute result
+deactivate Database
+API --> Client: 202 Accept \n updatedExpense {...}
+deactivate API
+end
+end
+end
+
+
+@enduml
