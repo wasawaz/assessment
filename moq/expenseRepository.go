@@ -3,8 +3,8 @@ package testmoq
 import "github.com/wasawaz/assessment/entity"
 
 type MockExpenseRepository struct {
-	expense  entity.Expense
-	expenses []entity.Expense
+	Expense  entity.Expense
+	Expenses []entity.Expense
 }
 
 func (r *MockExpenseRepository) Add(entity *entity.Expense) error {
