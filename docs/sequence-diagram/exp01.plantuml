@@ -1,0 +1,22 @@
+@startuml
+
+title: Create new expense
+actor Client
+participant API
+database Database 
+
+Client -> API: [POST] /api/expenses \n body: createExpense {...}
+activate API
+API -> API: Validation payload
+alt Invalid Payload
+API -> Client: 400 Bad Request
+else Valid Payload
+API -> Database: execute insert SQL new expense
+activate Database
+Database --> API: execute result
+deactivate Database
+end
+
+API --> Client: 201 Created \n createdExpense {...}
+deactivate API
+@enduml
