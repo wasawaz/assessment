@@ -68,3 +68,18 @@ func TestShouldUpdateExpense(t *testing.T) {
 	assert.Nil(t, err, "an error was not expected when update exist expense")
 
 }
+
+func TestShouldGetAllExpense(t *testing.T) {
+
+	db, mock, err := sqlmock.New()
+	assert.Nil(t, err, "an error was not expected when opening a stub database connection")
+	defer db.Close()
+	mockDB := &postgresql.PostgresqlDB{Db: db}
+	expenseRepository := NewExpenseRepository(mockDB)
+
+	mockRows := sqlmock.NewRows([]string{"id", "title", "amount", "note", "tags"}).AddRow(1, "mock title", 200.0, "mock note", pq.Array([]string{"mock"}))
+	mock.ExpectPrepare("SELECT (.+) EXPENSES").ExpectQuery().WillReturnRows(mockRows)
+	queryExpenses, err := expenseRepository.GetAll()
+	assert.Nil(t, err, "an error was not expected when add new expense")
+	assert.NotEqual(t, 0, len(queryExpenses), "expect expenses length greater than 0")
+}

@@ -10,6 +10,7 @@ type IExpenseRepository interface {
 	Add(entity *entity.Expense) error
 	Get(id int) (entity.Expense, error)
 	Update(entity entity.Expense) error
+	GetAll() ([]entity.Expense, error)
 }
 
 type expenseRepository struct {
@@ -57,4 +58,23 @@ func (e *expenseRepository) Update(entity entity.Expense) error {
 		return err
 	}
 	return nil
+}
+
+func (e *expenseRepository) GetAll() ([]entity.Expense, error) {
+	expenses := []entity.Expense{}
+	expense := entity.Expense{}
+	stmt, err := e.dbContext.Db.Prepare(`SELECT ID, TITLE, AMOUNT, NOTE, TAGS FROM EXPENSES`)
+	if err != nil {
+		return expenses, err
+	}
+	rows, err := stmt.Query()
+	if err != nil {
+		return expenses, err
+	}
+
+	for rows.Next() {
+		rows.Scan(&expense.Id, &expense.Title, &expense.Amount, &expense.Note, pq.Array(&expense.Tags))
+		expenses = append(expenses, expense)
+	}
+	return expenses, nil
 }

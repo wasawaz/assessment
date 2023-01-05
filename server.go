@@ -31,9 +31,10 @@ func main() {
 	createExpenseUsecase := usecase.NewCreateExpenseUsecase(expenseRepository)
 	getExpenseUsecase := usecase.NewGetExpenseUsecase(expenseRepository)
 	updateExpenseUsecase := usecase.NewUpdateExpenseUsecase(expenseRepository)
+	getAllExpenseUsecase := usecase.NewGetAllExpenseUsecase(expenseRepository)
 
 	// init httpserver
-	httpServer := initHttpServer(createExpenseUsecase, getExpenseUsecase, updateExpenseUsecase)
+	httpServer := initHttpServer(createExpenseUsecase, getExpenseUsecase, updateExpenseUsecase, getAllExpenseUsecase)
 
 	// Waiting signal
 	interrupt := make(chan os.Signal, 1)
@@ -55,7 +56,7 @@ func main() {
 }
 
 func initHttpServer(createExpenseUsecase usecase.ICreateExpenseUsecase, getExpenseUsecase usecase.IGetExpenseUsecase,
-	updateExpenseUsecase usecase.IUpdateExpenseUsecase) *httpserver.Server {
+	updateExpenseUsecase usecase.IUpdateExpenseUsecase, getAllExpenseUsecase usecase.IGetAllExpenseUsecase) *httpserver.Server {
 	appPort := os.Getenv("PORT")
 	e := echo.New()
 	e.Validator = customvalidator.NewCustomValidator(validator.New())
@@ -63,7 +64,8 @@ func initHttpServer(createExpenseUsecase usecase.ICreateExpenseUsecase, getExpen
 	createExpenseHandler := handler.NewCreateExpenseHandler(createExpenseUsecase)
 	getExpenseHandler := handler.NewGetExpenseHandler(getExpenseUsecase)
 	updateExpenseHandler := handler.NewUpdateExpenseHandler(updateExpenseUsecase)
-	router.New(e, createExpenseHandler, getExpenseHandler, updateExpenseHandler)
+	getAllExpenseHandler := handler.NewGetAllExpenseHandler(getAllExpenseUsecase)
+	router.New(e, createExpenseHandler, getExpenseHandler, updateExpenseHandler, getAllExpenseHandler)
 	httpServer := httpserver.New(e, appPort)
 	return httpServer
 }

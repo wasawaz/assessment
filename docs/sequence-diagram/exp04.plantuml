@@ -1,0 +1,17 @@
+@startuml
+
+title: Get All Expense
+actor Client
+participant API
+database Database 
+
+Client -> API: [GET] /api/expenses
+activate API
+API -> Database: execute query SQL for expense
+activate Database
+Database --> API: expense result
+deactivate Database
+API --> Client: 200 Ok \n Expenses {[{...}]...}
+deactivate API
+
+@enduml

@@ -8,9 +8,10 @@ import (
 )
 
 func New(e *echo.Echo, createExpenseHandler *handler.CreateExpenseHandler,
-	getExpenseHandler *handler.GetExpenseHandler, updateExpenseHandler *handler.UpdateExpenseHandler) {
+	getExpenseHandler *handler.GetExpenseHandler, updateExpenseHandler *handler.UpdateExpenseHandler,
+	getAllExpenseHandler *handler.GetAllExpenseHandler) {
 	e.GET("/healthz", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
-	newExpenseRoute(e, createExpenseHandler, getExpenseHandler, updateExpenseHandler)
+	newExpenseRoute(e, createExpenseHandler, getExpenseHandler, updateExpenseHandler, getAllExpenseHandler)
 }
