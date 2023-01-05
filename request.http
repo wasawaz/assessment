@@ -26,3 +26,12 @@ Content-Type: application/json
 	"note": "",
 	"tags": []
 }
+
+### Get Expense with Id
+GET {{apiBaseUri}}/expenses/1
+
+### Get Expense with unknown Id
+GET {{apiBaseUri}}/expenses/54
+
+### Get Expense with strinng
+GET {{apiBaseUri}}/expenses/mdsmksl

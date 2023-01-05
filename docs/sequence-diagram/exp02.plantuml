@@ -1,0 +1,26 @@
+@startuml
+
+title: Create new expense
+actor Client
+participant API
+database Database 
+
+Client -> API: [GET] /api/expenses/:id
+activate API
+API -> API: Validation route param not int
+alt Invalid Route param
+API -> Client: 404 Not Found
+else Valid Route param
+API -> Database: execute query SQL for expense
+activate Database
+Database --> API: expense result
+deactivate Database
+end
+alt expense exist
+API --> Client: 200 Ok \n Expense {...}
+else expense not exist
+API --> Client: 404 Not Found
+deactivate API
+end
+
+@enduml
