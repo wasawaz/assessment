@@ -58,7 +58,8 @@ func initHttpServer(createExpenseUsecase usecase.ICreateExpenseUsecase) *httpser
 	e.Validator = customvalidator.NewCustomValidator(validator.New())
 	e.Use(middleware.Logger())
 	createExpenseHandler := handler.NewCreateExpenseHandler(createExpenseUsecase)
-	router.New(e, createExpenseHandler)
+	getExpenseHandler := handler.NewGetExpenseHandler()
+	router.New(e, createExpenseHandler, getExpenseHandler)
 	httpServer := httpserver.New(e, appPort)
 	return httpServer
 }
