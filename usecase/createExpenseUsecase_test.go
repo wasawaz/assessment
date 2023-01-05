@@ -5,19 +5,13 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/wasawaz/assessment/entity"
+	testmoq "github.com/wasawaz/assessment/moq"
 )
-
-type mockExpenseRepository struct{}
-
-func (r *mockExpenseRepository) Add(entity *entity.Expense) error {
-	entity.Id = 1
-	return nil
-}
 
 func TestCreateExpenseUsecase(t *testing.T) {
 
 	newExpense := &entity.Expense{}
-	mockExpenseRepository := &mockExpenseRepository{}
+	mockExpenseRepository := &testmoq.MockExpenseRepository{}
 	createExpenseUsecase := NewCreateExpenseUsecase(mockExpenseRepository)
 
 	if assert.NoError(t, createExpenseUsecase.Execute(newExpense)) {
