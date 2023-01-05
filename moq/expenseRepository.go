@@ -21,5 +21,5 @@ func (r *MockExpenseRepository) Update(entity entity.Expense) error {
 }
 
 func (r *MockExpenseRepository) GetAll() ([]entity.Expense, error) {
-	return r.expenses, nil
+	return r.Expenses, nil
 }
