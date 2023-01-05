@@ -14,8 +14,8 @@ type CreateExpenseHandler struct {
 }
 
 type createExpense struct {
-	Title  string   `json:"title"`
-	Amount float32  `json:"amount"`
+	Title  string   `json:"title" validate:"required"`
+	Amount float32  `json:"amount" validate:"required",gt:0`
 	Note   string   `json:"note"`
 	Tags   []string `json:"tags"`
 }
@@ -30,6 +30,11 @@ func (e *CreateExpenseHandler) CreateExpense(c echo.Context) error {
 	if err != nil {
 		log.Printf("cannot binding payload")
 	}
+
+	if err = c.Validate(expense); err != nil {
+		return c.NoContent(http.StatusBadRequest)
+	}
+
 	entity := &entity.Expense{
 		Title:  expense.Title,
 		Amount: expense.Amount,

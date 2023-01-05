@@ -1,0 +1,28 @@
+@apiBaseUri = http://localhost:2527
+
+### Health Check
+GET {{apiBaseUri}}/healthz
+
+
+
+### Create Expense
+POST {{apiBaseUri}}/expenses
+Content-Type: application/json
+
+{
+	"title": "buy a new phone",
+	"amount": 0.5,
+	"note": "",
+	"tags": ["gadget", "shopping"]
+}
+
+### Create Expense with empty required
+POST {{apiBaseUri}}/expenses
+Content-Type: application/json
+
+{
+	"title": "",
+	"amount": 1,
+	"note": "",
+	"tags": []
+}

@@ -6,9 +6,11 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	handler "github.com/wasawaz/assessment/controller/handler"
+	"github.com/wasawaz/assessment/controller/handler/customvalidator"
 	"github.com/wasawaz/assessment/controller/router"
 	"github.com/wasawaz/assessment/pkg/httpserver"
 	"github.com/wasawaz/assessment/pkg/postgresql"
@@ -53,6 +55,7 @@ func main() {
 func initHttpServer(createExpenseUsecase usecase.ICreateExpenseUsecase) *httpserver.Server {
 	appPort := os.Getenv("PORT")
 	e := echo.New()
+	e.Validator = customvalidator.NewCustomValidator(validator.New())
 	e.Use(middleware.Logger())
 	createExpenseHandler := handler.NewCreateExpenseHandler(createExpenseUsecase)
 	router.New(e, createExpenseHandler)
