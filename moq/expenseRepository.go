@@ -12,3 +12,7 @@ func (r *MockExpenseRepository) Add(entity *entity.Expense) error {
 func (r *MockExpenseRepository) Get(id int) (entity.Expense, error) {
 	return entity.Expense{Id: 1}, nil
 }
+
+func (r *MockExpenseRepository) Update(entity entity.Expense) error {
+	return nil
+}

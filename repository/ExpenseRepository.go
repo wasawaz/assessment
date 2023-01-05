@@ -9,6 +9,7 @@ import (
 type IExpenseRepository interface {
 	Add(entity *entity.Expense) error
 	Get(id int) (entity.Expense, error)
+	Update(entity entity.Expense) error
 }
 
 type expenseRepository struct {
@@ -44,4 +45,16 @@ func (e *expenseRepository) Get(id int) (entity.Expense, error) {
 		return expense, err
 	}
 	return expense, nil
+}
+
+func (e *expenseRepository) Update(entity entity.Expense) error {
+	stmt, err := e.dbContext.Db.Prepare(`UPDATE EXPENSES SET TITLE = $1, AMOUNT = $2, NOTE = $3, TAGS = $4 WHERE ID = $5`)
+	if err != nil {
+		return err
+	}
+	_, err = stmt.Exec(entity.Title, entity.Amount, entity.Note, pq.Array(&entity.Tags), entity.Id)
+	if err != nil {
+		return err
+	}
+	return nil
 }
