@@ -6,7 +6,7 @@ import (
 )
 
 type IGetAllExpenseUsecase interface {
-	Execute(id int) ([]entity.Expense, error)
+	Execute() ([]entity.Expense, error)
 }
 
 type getAllExpenseUsecase struct {

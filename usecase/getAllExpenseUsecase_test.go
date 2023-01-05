@@ -10,7 +10,14 @@ import (
 
 func TestGetAllExpenseUsecase(t *testing.T) {
 	mockExpenseRepository := &testmoq.MockExpenseRepository{
-		Expenses: []entity.Expense{},
+		Expenses: []entity.Expense{
+			{
+				Title:  "",
+				Amount: 79,
+				Note:   "night market promotion discount 10 bath",
+				Tags:   []string{"food", "beverage"},
+			},
+		},
 	}
 	getAllExpenseUsecase := NewGetAllExpenseUsecase(mockExpenseRepository)
 	expenses, err := getAllExpenseUsecase.Execute()
