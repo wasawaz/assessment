@@ -6,8 +6,9 @@ import (
 )
 
 func newExpenseRoute(e *echo.Echo, createExpenseHandler *handler.CreateExpenseHandler, getExpenseHandler *handler.GetExpenseHandler,
-	updateExpenseHandler *handler.UpdateExpenseHandler) {
+	updateExpenseHandler *handler.UpdateExpenseHandler, getAllExpenseHandler *handler.GetAllExpenseHandler) {
 	e.POST("/expenses", createExpenseHandler.CreateExpense)
 	e.GET("/expenses/:id", getExpenseHandler.GetExpense)
 	e.PUT("/expenses/:id", updateExpenseHandler.UpdateExpense)
+	e.GET("/expenses", getAllExpenseHandler.GetAllExpense)
 }

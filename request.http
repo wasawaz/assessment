@@ -46,3 +46,6 @@ Content-Type: application/json
 	"note": "",
 	"tags": ["food", "cake"]
 }
+
+### Get All Expense
+GET {{apiBaseUri}}/expenses
