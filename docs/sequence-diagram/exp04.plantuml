@@ -1,6 +1,6 @@
 @startuml
 
-title: Get All Expense
+title: Get all expenses
 actor Client
 participant API
 database Database 

@@ -1,3 +1,6 @@
+//go:build unit
+// +build unit
+
 package usecase
 
 import (
@@ -5,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/wasawaz/assessment/entity"
-	testmoq "github.com/wasawaz/assessment/moq"
+	testmoq "github.com/wasawaz/assessment/usecase/mock"
 )
 
 func TestGetAllExpenseUsecase(t *testing.T) {

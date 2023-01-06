@@ -1,6 +1,6 @@
 @startuml
 
-title: Create new expense
+title: Get expense by Id
 actor Client
 participant API
 database Database 

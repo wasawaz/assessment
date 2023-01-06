@@ -1,3 +1,6 @@
+//go:build unit
+// +build unit
+
 package handler
 
 import (
@@ -29,7 +32,7 @@ func TestGetExpense(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
-		c.SetPath("/expense/:id")
+		c.SetPath("/expenses/:id")
 		c.SetParamNames("id")
 		c.SetParamValues("1")
 		h := NewGetExpenseHandler(&mockGetExpenseUsecase{expense: entity.Expense{Id: 1}})
@@ -46,7 +49,7 @@ func TestGetExpense(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
-		c.SetPath("/expense/:id")
+		c.SetPath("/expenses/:id")
 		c.SetParamNames("id")
 		c.SetParamValues("dmdemkd")
 		h := NewGetExpenseHandler(&mockGetExpenseUsecase{expense: entity.Expense{Id: 1}})
@@ -63,7 +66,7 @@ func TestGetExpense(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
-		c.SetPath("/expense/:id")
+		c.SetPath("/expenses/:id")
 		c.SetParamNames("id")
 		c.SetParamValues("1")
 		h := NewGetExpenseHandler(&mockGetExpenseUsecase{expense: entity.Expense{}, err: sql.ErrNoRows})

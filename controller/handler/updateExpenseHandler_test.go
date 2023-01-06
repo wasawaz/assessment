@@ -1,3 +1,6 @@
+//go:build unit
+// +build unit
+
 package handler
 
 import (
@@ -34,7 +37,7 @@ func TestUpdateExpense(t *testing.T) {
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
-		c.SetPath("/expense/:id")
+		c.SetPath("/expenses/:id")
 		c.SetParamNames("id")
 		c.SetParamValues("1")
 		h := NewUpdateExpenseHandler(&mockUpdateExpenseUsecase{})
@@ -51,11 +54,11 @@ func TestUpdateExpense(t *testing.T) {
 		expenseJson := `{"title":"","amount":79,"note":"night market promotion discount 10 bath","tags":["food","beverage"]}`
 		e := echo.New()
 		e.Validator = customvalidator.NewCustomValidator(validator.New())
-		req := httptest.NewRequest(http.MethodPost, "/expenses", strings.NewReader(expenseJson))
+		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(expenseJson))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
-		c.SetPath("/expense/:id")
+		c.SetPath("/expenses/:id")
 		c.SetParamNames("id")
 		c.SetParamValues("1")
 		h := NewUpdateExpenseHandler(&mockUpdateExpenseUsecase{})
@@ -71,11 +74,11 @@ func TestUpdateExpense(t *testing.T) {
 		expenseJson := `{"title":"strawberry smoothie","amount":79,"note":"night market promotion discount 10 bath","tags":["food","beverage"]}`
 		e := echo.New()
 		e.Validator = customvalidator.NewCustomValidator(validator.New())
-		req := httptest.NewRequest(http.MethodPost, "/expenses", strings.NewReader(expenseJson))
+		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(expenseJson))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
-		c.SetPath("/expense/:id")
+		c.SetPath("/expenses/:id")
 		c.SetParamNames("id")
 		c.SetParamValues("1")
 		h := NewUpdateExpenseHandler(&mockUpdateExpenseUsecase{err: sql.ErrNoRows})
@@ -91,11 +94,11 @@ func TestUpdateExpense(t *testing.T) {
 		expenseJson := `{"title":"strawberry smoothie","amount":79,"note":"night market promotion discount 10 bath","tags":["food","beverage"]}`
 		e := echo.New()
 		e.Validator = customvalidator.NewCustomValidator(validator.New())
-		req := httptest.NewRequest(http.MethodPost, "/expenses", strings.NewReader(expenseJson))
+		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(expenseJson))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
-		c.SetPath("/expense/:id")
+		c.SetPath("/expenses/:id")
 		c.SetParamNames("id")
 		c.SetParamValues("mkdsf")
 		h := NewUpdateExpenseHandler(&mockUpdateExpenseUsecase{err: sql.ErrNoRows})
