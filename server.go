@@ -12,6 +12,7 @@ import (
 	handler "github.com/wasawaz/assessment/controller/handler"
 	"github.com/wasawaz/assessment/controller/handler/customvalidator"
 	"github.com/wasawaz/assessment/controller/router"
+	expense_middleware "github.com/wasawaz/assessment/middleware"
 	"github.com/wasawaz/assessment/pkg/httpserver"
 	"github.com/wasawaz/assessment/pkg/postgresql"
 	"github.com/wasawaz/assessment/repository"
@@ -61,6 +62,7 @@ func initHttpServer(createExpenseUsecase usecase.ICreateExpenseUsecase, getExpen
 	e := echo.New()
 	e.Validator = customvalidator.NewCustomValidator(validator.New())
 	e.Use(middleware.Logger())
+	e.Use(expense_middleware.AuthMiddleware)
 	createExpenseHandler := handler.NewCreateExpenseHandler(createExpenseUsecase)
 	getExpenseHandler := handler.NewGetExpenseHandler(getExpenseUsecase)
 	updateExpenseHandler := handler.NewUpdateExpenseHandler(updateExpenseUsecase)
