@@ -4,6 +4,7 @@
 package handler
 
 import (
+	expense_middleware "github.com/wasawaz/assessment/middleware"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -32,12 +33,14 @@ func TestCreateExpense(t *testing.T) {
 		e.Validator = customvalidator.NewCustomValidator(validator.New())
 		req := httptest.NewRequest(http.MethodPost, "/expenses", strings.NewReader(expenseJson))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+		req.Header.Set(echo.HeaderAuthorization,"November 10, 2009")
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
-		h := NewCreateExpenseHandler(&mockCreateExpenseUsecase{})
 
+		h := NewCreateExpenseHandler(&mockCreateExpenseUsecase{})
+		wrappedHandler := expense_middleware.AuthMiddleware(h.CreateExpense)
 		// Assertions
-		if assert.NoError(t, h.CreateExpense(c)) {
+		if assert.NoError(t, wrappedHandler(c)) {
 			assert.Equal(t, http.StatusCreated, rec.Code)
 			assert.Equal(t, expectedExpenseJson, rec.Body.String())
 		}
@@ -50,13 +53,35 @@ func TestCreateExpense(t *testing.T) {
 		e.Validator = customvalidator.NewCustomValidator(validator.New())
 		req := httptest.NewRequest(http.MethodPost, "/expenses", strings.NewReader(expenseJson))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+		req.Header.Set(echo.HeaderAuthorization,"November 10, 2009")
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
 		h := NewCreateExpenseHandler(&mockCreateExpenseUsecase{})
-
+		wrappedHandler := expense_middleware.AuthMiddleware(h.CreateExpense)
 		// Assertions
-		if assert.NoError(t, h.CreateExpense(c)) {
+		if assert.NoError(t, wrappedHandler(c)) {
 			assert.Equal(t, http.StatusBadRequest, rec.Code)
+		}
+	})
+
+	t.Run("should return http status 401", func(t *testing.T) {
+		// Setup
+		expenseJson := `{"title":"strawberry smoothie","amount":79,"note":"night market promotion discount 10 bath","tags":["food","beverage"]}`
+		expectedExpenseJson := ``
+		e := echo.New()
+		e.Validator = customvalidator.NewCustomValidator(validator.New())
+		req := httptest.NewRequest(http.MethodPost, "/expenses", strings.NewReader(expenseJson))
+		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+		req.Header.Set(echo.HeaderAuthorization,"November 10, 2009wrong_token")
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+
+		h := NewCreateExpenseHandler(&mockCreateExpenseUsecase{})
+		wrappedHandler := expense_middleware.AuthMiddleware(h.CreateExpense)
+		// Assertions
+		if assert.NoError(t, wrappedHandler(c)) {
+			assert.Equal(t, http.StatusUnauthorized, rec.Code)
+			assert.Equal(t, expectedExpenseJson, rec.Body.String())
 		}
 	})
 }
