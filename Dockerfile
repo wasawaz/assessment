@@ -6,7 +6,9 @@ COPY . .
 
 RUN go mod tidy
 
-RUN go build -o expense-api .
+CMD CGO_ENABLED=0 go test --tags=unit -v ./...
+
+RUN go build -o expenses-api .
 
 FROM alpine:3.16.3
 
@@ -14,6 +16,6 @@ EXPOSE 2527
 
 WORKDIR /app
 
-COPY --from=builder /app/expense-api /app
+COPY --from=builder /app/expenses-api /app
 
-CMD [ "/app/expense-api" ]
+CMD [ "/app/expenses-api" ]
