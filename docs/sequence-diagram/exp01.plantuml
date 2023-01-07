@@ -7,6 +7,9 @@ database Database
 
 Client -> API: [POST] /api/expenses \n body: createExpense {...}
 activate API
+alt Unauthorized
+API --> Client: 401 Unauthorized
+else Authorized
 API -> API: Validation payload
 alt Invalid Payload
 API -> Client: 400 Bad Request
@@ -16,7 +19,7 @@ activate Database
 Database --> API: execute result
 deactivate Database
 end
-
 API --> Client: 201 Created \n createdExpense {...}
 deactivate API
+end
 @enduml
