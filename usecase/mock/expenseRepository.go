@@ -1,4 +1,4 @@
-package testmoq
+package testmock
 
 import "github.com/wasawaz/assessment/entity"
 

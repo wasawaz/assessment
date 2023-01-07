@@ -12,6 +12,7 @@ import (
 )
 
 func TestGetAllExpenseUsecase(t *testing.T) {
+	// Setup
 	mockExpenseRepository := &testmoq.MockExpenseRepository{
 		Expenses: []entity.Expense{
 			{
@@ -23,7 +24,11 @@ func TestGetAllExpenseUsecase(t *testing.T) {
 		},
 	}
 	getAllExpenseUsecase := NewGetAllExpenseUsecase(mockExpenseRepository)
+
+	// Arrange
 	expenses, err := getAllExpenseUsecase.Execute()
+
+	// Assertions
 	if assert.NoError(t, err) {
 		assert.NotEqual(t, 0, len(expenses), "expect expense length not equal 0")
 	}

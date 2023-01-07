@@ -12,12 +12,16 @@ import (
 )
 
 func TestCreateExpenseUsecase(t *testing.T) {
-
+	// Setup
 	newExpense := &entity.Expense{}
 	mockExpenseRepository := &testmoq.MockExpenseRepository{}
 	createExpenseUsecase := NewCreateExpenseUsecase(mockExpenseRepository)
 
-	if assert.NoError(t, createExpenseUsecase.Execute(newExpense)) {
+	// Arrange
+	err:= createExpenseUsecase.Execute(newExpense)
+
+	// Assertions
+	if assert.NoError(t,err) {
 		assert.NotEqual(t, 0, newExpense.Id, "expect id not equal 0")
 	}
 }

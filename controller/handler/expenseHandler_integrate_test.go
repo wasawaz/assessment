@@ -39,8 +39,12 @@ func TestExpense(t *testing.T) {
 		createExpenseUsecase := usecase.NewCreateExpenseUsecase(expenseRepository)
 		h := NewCreateExpenseHandler(createExpenseUsecase)
 		wrappedHandler := expense_middleware.AuthMiddleware(h.CreateExpense)
+
+		// Arrange
+		err := wrappedHandler(c)
+
 		// Assertions
-		if assert.NoError(t, wrappedHandler(c)) {
+		if assert.NoError(t, err) {
 			assert.Equal(t, http.StatusCreated, rec.Code)
 			assert.Equal(t, expectedExpenseJson, rec.Body.String())
 		}
