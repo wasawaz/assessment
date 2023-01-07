@@ -24,6 +24,10 @@ Integration Test with docker
 docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from expense_integration_test && \
 docker-compose -f docker-compose.test.yml down
 ```
+*** to clear test cache please run
+```bash
+go clean -testcache
+```
 
 ## Run
 Run normal
