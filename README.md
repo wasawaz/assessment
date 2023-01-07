@@ -3,10 +3,10 @@
 GoLang REST API. Responsibility for CRUD expense transaction from authorize client.
 This is assessment from the [requirements](docs/requirements/index.md) of GO Software Engineering Bootcamp.
 this include 4 usecases 
-- [Create new expense](docs/requirements/index.md#Story:-EXP01)
-- [Update exist expense](docs/requirements/index.md#Story:-EXP02)
-- [Get expense by id](docs/requirements/index.md#Story:-EXP03)
-- [Get all expense](docs/requirements/index.md#Story:-EXP04)
+- [Create new expense](docs/requirements/index.md#Story-EXP01)
+- [Update exist expense](docs/requirements/index.md#Story-EXP02)
+- [Get expense by id](docs/requirements/index.md#Story-EXP03)
+- [Get all expense](docs/requirements/index.md#Story-EXP04)
 
 
 ## Build
