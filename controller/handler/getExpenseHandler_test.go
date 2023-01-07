@@ -39,8 +39,10 @@ func TestGetExpense(t *testing.T) {
 		c.SetParamValues("1")
 		h := NewGetExpenseHandler(&mockGetExpenseUsecase{expense: entity.Expense{Id: 1}})
 		wrappedHandler :=expense_middleware.AuthMiddleware(h.GetExpense)
+		// Arrange
+		err:= wrappedHandler(c)
 		// Assertions
-		if assert.NoError(t, wrappedHandler(c)) {
+		if assert.NoError(t, err) {
 			assert.Equal(t, http.StatusOK, rec.Code)
 		}
 	})
@@ -57,8 +59,11 @@ func TestGetExpense(t *testing.T) {
 		c.SetParamValues("dmdemkd")
 		h := NewGetExpenseHandler(&mockGetExpenseUsecase{expense: entity.Expense{Id: 1}})
 		wrappedHandler :=expense_middleware.AuthMiddleware(h.GetExpense)
+
+		// Arrange
+		err:= wrappedHandler(c)
 		// Assertions
-		if assert.NoError(t, wrappedHandler(c)) {
+		if assert.NoError(t, err) {
 			assert.Equal(t, http.StatusNotFound, rec.Code)
 		}
 	})
@@ -75,13 +80,18 @@ func TestGetExpense(t *testing.T) {
 		c.SetParamValues("1")
 		h := NewGetExpenseHandler(&mockGetExpenseUsecase{expense: entity.Expense{}, err: sql.ErrNoRows})
 		wrappedHandler :=expense_middleware.AuthMiddleware(h.GetExpense)
+
+		// Arrange
+		err:=wrappedHandler(c)
+
 		// Assertions
-		if assert.NoError(t, wrappedHandler(c)) {
+		if assert.NoError(t, err) {
 			assert.Equal(t, http.StatusNotFound, rec.Code)
 		}
 	})
 
 	t.Run("should return http status 401", func(t *testing.T) {
+		// Setup
 		e := echo.New()
 		e.Validator = customvalidator.NewCustomValidator(validator.New())
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
@@ -93,8 +103,12 @@ func TestGetExpense(t *testing.T) {
 		c.SetParamValues("1")
 		h := NewGetExpenseHandler(&mockGetExpenseUsecase{expense: entity.Expense{Id: 1}})
 		wrappedHandler :=expense_middleware.AuthMiddleware(h.GetExpense)
+
+		// Arrange
+		err:=wrappedHandler(c)
+
 		// Assertions
-		if assert.NoError(t, wrappedHandler(c)) {
+		if assert.NoError(t, err) {
 			assert.Equal(t, http.StatusUnauthorized, rec.Code)
 		}
 	})

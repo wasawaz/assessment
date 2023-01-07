@@ -1,3 +1,4 @@
+// Package postgres implements postgres connection.
 package postgresql
 
 import (
@@ -6,13 +7,15 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type PostgresqlDB struct {
+// Postgres -.
+type Postgres struct {
 	Db *sql.DB
 }
 
-func New(connectionString string) (*PostgresqlDB, error) {
+// New -.
+func New(connectionString string) (*Postgres, error) {
 	db, err := sql.Open("postgres", connectionString)
-	pg := &PostgresqlDB{db}
+	pg := &Postgres{db}
 	if err != nil {
 		return pg, err
 	}
@@ -23,7 +26,8 @@ func New(connectionString string) (*PostgresqlDB, error) {
 	return pg, nil
 }
 
-func (pg *PostgresqlDB) Close() {
+// Close -.
+func (pg *Postgres) Close() {
 	if pg.Db != nil {
 		pg.Db.Close()
 	}

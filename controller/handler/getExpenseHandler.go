@@ -1,3 +1,4 @@
+// Package handler contains functions for http request handling separate route name
 package handler
 
 import (
@@ -9,14 +10,17 @@ import (
 	"github.com/wasawaz/assessment/usecase"
 )
 
+// GetExpenseHandler is used for get expense by id handler
 type GetExpenseHandler struct {
 	getExpenseUsecase usecase.IGetExpenseUsecase
 }
 
+// NewGetExpenseHandler is used for new GetExpenseHandler instance
 func NewGetExpenseHandler(getExpenseUsecase usecase.IGetExpenseUsecase) *GetExpenseHandler {
 	return &GetExpenseHandler{getExpenseUsecase}
 }
 
+// GetExpense is used for handle http request for get expense by id
 func (e *GetExpenseHandler) GetExpense(c echo.Context) error {
 	paramId := c.Param("id")
 	id, err := strconv.ParseInt(paramId, 10, 32)

@@ -12,9 +12,14 @@ import (
 )
 
 func TestUpdateExpenseUsecase(t *testing.T) {
-
+	// Setup
 	newExpense := entity.Expense{}
 	mockExpenseRepository := &testmoq.MockExpenseRepository{}
 	updateExpenseUsecase := NewUpdateExpenseUsecase(mockExpenseRepository)
-	assert.NoError(t, updateExpenseUsecase.Execute(newExpense))
+
+	// Arrange
+	err := updateExpenseUsecase.Execute(newExpense)
+
+	// Assertions
+	assert.NoError(t, err)
 }

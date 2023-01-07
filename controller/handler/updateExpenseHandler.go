@@ -1,3 +1,4 @@
+// Package handler contains functions for http request handling separate route name
 package handler
 
 import (
@@ -11,10 +12,12 @@ import (
 	"github.com/wasawaz/assessment/usecase"
 )
 
+// UpdateExpenseHandler is used for update expense by id handler
 type UpdateExpenseHandler struct {
 	updateExpenseUsecase usecase.IUpdateExpenseUsecase
 }
 
+// updateExpense is used for update expense payload
 type updateExpense struct {
 	Title  string   `json:"title" validate:"required"`
 	Amount float32  `json:"amount" validate:"required",gt:0`
@@ -22,10 +25,12 @@ type updateExpense struct {
 	Tags   []string `json:"tags"`
 }
 
+// NewUpdateExpenseHandler is used for new UpdateExpenseHandler instance
 func NewUpdateExpenseHandler(updateExpenseUsecase usecase.IUpdateExpenseUsecase) *UpdateExpenseHandler {
 	return &UpdateExpenseHandler{updateExpenseUsecase}
 }
 
+// UpdateExpense is used for handle http request for update expense by id
 func (h *UpdateExpenseHandler) UpdateExpense(c echo.Context) error {
 	expense := &updateExpense{}
 	paramId := c.Param("id")

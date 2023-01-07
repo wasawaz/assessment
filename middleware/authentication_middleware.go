@@ -1,3 +1,4 @@
+// Package expense_middleware contains http handle on routes requests
 package expense_middleware
 
 import (
@@ -6,8 +7,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// validAuth - is used for valid authentication value
 const validAuth = "November 10, 2009"
 
+// AuthMiddleware - is used for getting header Authorization and validate
 func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		// Get the "Authorization" header value
@@ -22,6 +25,7 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
+// isValidAuthValue is used for checking value match specific string
 func isValidAuthValue(value string) bool {
 	return value == validAuth
 }

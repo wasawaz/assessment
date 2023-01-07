@@ -1,3 +1,4 @@
+// Package usecase contains business logic for get all expenses
 package usecase
 
 import (
@@ -13,10 +14,12 @@ type getAllExpenseUsecase struct {
 	expenseRepository repository.IExpenseRepository
 }
 
+// NewGetAllExpenseUsecase -.
 func NewGetAllExpenseUsecase(expenseRepository repository.IExpenseRepository) *getAllExpenseUsecase {
 	return &getAllExpenseUsecase{expenseRepository}
 }
 
+// Execute - execute business logic for get all expense.
 func (u *getAllExpenseUsecase) Execute() ([]entity.Expense, error) {
 	expense, err := u.expenseRepository.GetAll()
 	if err != nil {

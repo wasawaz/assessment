@@ -1,3 +1,4 @@
+// Package usecase contains business logic for get expense by id
 package usecase
 
 import (
@@ -13,10 +14,12 @@ type getExpenseUsecase struct {
 	expenseRepository repository.IExpenseRepository
 }
 
+// NewGetExpenseUsecase -
 func NewGetExpenseUsecase(expenseRepository repository.IExpenseRepository) *getExpenseUsecase {
 	return &getExpenseUsecase{expenseRepository}
 }
 
+// Execute - execute business logic for get expense by id.
 func (u *getExpenseUsecase) Execute(id int) (entity.Expense, error) {
 	expense, err := u.expenseRepository.Get(id)
 	if err != nil {

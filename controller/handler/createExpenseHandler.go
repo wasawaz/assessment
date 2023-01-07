@@ -1,3 +1,4 @@
+// Package handler contains functions for http request handling separate route name
 package handler
 
 import (
@@ -9,10 +10,11 @@ import (
 	"github.com/wasawaz/assessment/usecase"
 )
 
+// CreateExpenseHandler is used for create expense handler
 type CreateExpenseHandler struct {
 	createExpenseUsecase usecase.ICreateExpenseUsecase
 }
-
+// createExpense is used for create expense payload
 type createExpense struct {
 	Title  string   `json:"title" validate:"required"`
 	Amount float32  `json:"amount" validate:"required",gt:0`
@@ -20,10 +22,12 @@ type createExpense struct {
 	Tags   []string `json:"tags"`
 }
 
+// NewCreateExpenseHandler is used for new CreateExpenseHandler instance
 func NewCreateExpenseHandler(createExpenseUsecase usecase.ICreateExpenseUsecase) *CreateExpenseHandler {
 	return &CreateExpenseHandler{createExpenseUsecase}
 }
 
+// CreateExpense is used for handle http request for create new expense
 func (e *CreateExpenseHandler) CreateExpense(c echo.Context) error {
 	expense := &createExpense{}
 	err := c.Bind(expense)
@@ -34,7 +38,6 @@ func (e *CreateExpenseHandler) CreateExpense(c echo.Context) error {
 	if err = c.Validate(expense); err != nil {
 		return c.NoContent(http.StatusBadRequest)
 	}
-
 	entity := &entity.Expense{
 		Title:  expense.Title,
 		Amount: expense.Amount,

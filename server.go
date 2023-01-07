@@ -1,3 +1,4 @@
+// Package main configures and runs application.
 package main
 
 import (
@@ -21,7 +22,7 @@ import (
 
 func main() {
 
-	// init database
+	// Database
 	pg, err := initDatabase()
 	if err != nil {
 		log.Fatalf("cannot init db cause %v", err)
@@ -34,7 +35,7 @@ func main() {
 	updateExpenseUsecase := usecase.NewUpdateExpenseUsecase(expenseRepository)
 	getAllExpenseUsecase := usecase.NewGetAllExpenseUsecase(expenseRepository)
 
-	// init httpserver
+	// Httpserver
 	httpServer := initHttpServer(createExpenseUsecase, getExpenseUsecase, updateExpenseUsecase, getAllExpenseUsecase)
 
 	// Waiting signal
@@ -56,6 +57,7 @@ func main() {
 
 }
 
+// Init HTTP Server
 func initHttpServer(createExpenseUsecase usecase.ICreateExpenseUsecase, getExpenseUsecase usecase.IGetExpenseUsecase,
 	updateExpenseUsecase usecase.IUpdateExpenseUsecase, getAllExpenseUsecase usecase.IGetAllExpenseUsecase) *httpserver.Server {
 	appPort := os.Getenv("PORT")
@@ -72,7 +74,8 @@ func initHttpServer(createExpenseUsecase usecase.ICreateExpenseUsecase, getExpen
 	return httpServer
 }
 
-func initDatabase() (*postgresql.PostgresqlDB, error) {
+// Init Database
+func initDatabase() (*postgresql.Postgres, error) {
 	databaseConnectionString := os.Getenv("DATABASE_URL")
 	pg, err := postgresql.New(databaseConnectionString)
 	if err != nil {

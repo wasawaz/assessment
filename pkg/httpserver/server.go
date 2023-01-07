@@ -1,3 +1,4 @@
+// Package httpserver implements HTTP server.
 package httpserver
 
 import (
@@ -8,11 +9,13 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// default setting for start http server
 const (
 	_defaultAddr     = ":80"
 	_shutdownTimeout = 3 * time.Second
 )
 
+// Server -.
 type Server struct {
 	server          *echo.Echo
 	port            string
@@ -20,6 +23,7 @@ type Server struct {
 	shutdownTimeout time.Duration
 }
 
+// New -.
 func New(echo *echo.Echo, port string) *Server {
 	s := &Server{
 		server:          echo,
@@ -47,6 +51,7 @@ func (s *Server) Notify() <-chan error {
 	return s.notify
 }
 
+// Shutdown -.
 func (s *Server) Shutdown() error {
 	ctx, cancel := context.WithTimeout(context.Background(), s.shutdownTimeout)
 	defer cancel()
