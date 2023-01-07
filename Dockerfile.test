@@ -1,5 +1,8 @@
 FROM golang:1.19-alpine
 
+# Create directory for running source code
 WORKDIR /go/src/expense
+# Clean test cache
+RUN go clean -testcache
 # Run tests
 CMD CGO_ENABLED=0 go test --tags=integration -v ./...
