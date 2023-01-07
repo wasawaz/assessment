@@ -25,7 +25,7 @@ func TestShouldAddExpense(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.Nil(t, err, "an error was not expected when opening a stub database connection")
 	defer db.Close()
-	mockDB := &postgresql.PostgresqlDB{Db: db}
+	mockDB := &postgresql.Postgres{Db: db}
 	expenseRepository := NewExpenseRepository(mockDB)
 
 	mockRows := sqlmock.NewRows([]string{"id"}).AddRow(1)
@@ -42,7 +42,7 @@ func TestShouldGetExpense(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.Nil(t, err, "an error was not expected when opening a stub database connection")
 	defer db.Close()
-	mockDB := &postgresql.PostgresqlDB{Db: db}
+	mockDB := &postgresql.Postgres{Db: db}
 	expenseRepository := NewExpenseRepository(mockDB)
 
 	mockRows := sqlmock.NewRows([]string{"id", "title", "amount", "note", "tags"}).AddRow(1, "mock title", 200.0, "mock note", pq.Array([]string{"mock"}))
@@ -64,7 +64,7 @@ func TestShouldUpdateExpense(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.Nil(t, err, "an error was not expected when opening a stub database connection")
 	defer db.Close()
-	mockDB := &postgresql.PostgresqlDB{Db: db}
+	mockDB := &postgresql.Postgres{Db: db}
 	expenseRepository := NewExpenseRepository(mockDB)
 	mock.ExpectPrepare("UPDATE EXPENSES").ExpectExec().WithArgs(mockExpense.Title, mockExpense.Amount, mockExpense.Note, pq.Array(mockExpense.Tags), mockExpense.Id).WillReturnResult(sqlmock.NewResult(1, 1))
 	err = expenseRepository.Update(mockExpense)
@@ -77,7 +77,7 @@ func TestShouldGetAllExpense(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.Nil(t, err, "an error was not expected when opening a stub database connection")
 	defer db.Close()
-	mockDB := &postgresql.PostgresqlDB{Db: db}
+	mockDB := &postgresql.Postgres{Db: db}
 	expenseRepository := NewExpenseRepository(mockDB)
 
 	mockRows := sqlmock.NewRows([]string{"id", "title", "amount", "note", "tags"}).AddRow(1, "mock title", 200.0, "mock note", pq.Array([]string{"mock"}))

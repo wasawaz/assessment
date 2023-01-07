@@ -1,3 +1,5 @@
+// Package repository contains functions for CRUD expense to database
+
 package repository
 
 import (
@@ -14,13 +16,15 @@ type IExpenseRepository interface {
 }
 
 type expenseRepository struct {
-	dbContext *postgresql.PostgresqlDB
+	dbContext *postgresql.Postgres
 }
 
-func NewExpenseRepository(dbContext *postgresql.PostgresqlDB) *expenseRepository {
+// NewExpenseRepository -.
+func NewExpenseRepository(dbContext *postgresql.Postgres) *expenseRepository {
 	return &expenseRepository{dbContext}
 }
 
+// Add - add new expense.
 func (e *expenseRepository) Add(entity *entity.Expense) error {
 	stmt, err := e.dbContext.Db.Prepare(`INSERT INTO EXPENSES(TITLE, AMOUNT, NOTE, TAGS) VALUES($1, $2, $3, $4) RETURNING id`)
 	if err != nil {
@@ -35,6 +39,7 @@ func (e *expenseRepository) Add(entity *entity.Expense) error {
 	return nil
 }
 
+// Get - get expense by Id.
 func (e *expenseRepository) Get(id int) (entity.Expense, error) {
 	expense := entity.Expense{}
 	stmt, err := e.dbContext.Db.Prepare(`SELECT ID, TITLE, AMOUNT, NOTE, TAGS FROM EXPENSES WHERE ID = $1`)
@@ -48,6 +53,7 @@ func (e *expenseRepository) Get(id int) (entity.Expense, error) {
 	return expense, nil
 }
 
+// Update - update expense by Id.
 func (e *expenseRepository) Update(entity entity.Expense) error {
 	stmt, err := e.dbContext.Db.Prepare(`UPDATE EXPENSES SET TITLE = $1, AMOUNT = $2, NOTE = $3, TAGS = $4 WHERE ID = $5`)
 	if err != nil {
@@ -60,6 +66,7 @@ func (e *expenseRepository) Update(entity entity.Expense) error {
 	return nil
 }
 
+// GetAll - get a;; expense.
 func (e *expenseRepository) GetAll() ([]entity.Expense, error) {
 	expenses := []entity.Expense{}
 	expense := entity.Expense{}
