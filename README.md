@@ -1,5 +1,5 @@
 [![CI](https://github.com/tj-actions/coverage-badge-go/workflows/CI/badge.svg)](https://github.com/tj-actions/coverage-badge-go/actions?query=workflow%3ACI)
-![Coverage](https://img.shields.io/badge/Coverage-100.0%25-brightgreen)
+[![Coverage Status](https://coveralls.io/repos/github/wasawaz/assessment/badge.svg?branch=main)](https://coveralls.io/github/wasawaz/assessment?branch=main)
 
 # Expense Tracking API
 
