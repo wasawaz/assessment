@@ -7,6 +7,9 @@ database Database
 
 Client -> API: [PUT] /api/expenses/1 \n body: updateExpense {...}
 activate API
+alt Unauthorized
+API --> Client: 401 Unauthorized
+else Authorized
 API -> API: Validation payload
 alt Invalid Payload
 API -> Client: 400 Bad Request
@@ -29,6 +32,7 @@ Database --> API: execute result
 deactivate Database
 API --> Client: 202 Accept \n updatedExpense {...}
 deactivate API
+end
 end
 end
 end

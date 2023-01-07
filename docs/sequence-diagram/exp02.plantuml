@@ -7,6 +7,9 @@ database Database
 
 Client -> API: [GET] /api/expenses/:id
 activate API
+alt Unauthorized
+API --> Client: 401 Unauthorized
+else Authorized
 API -> API: Validation route param not int
 alt Invalid Route param
 API -> Client: 404 Not Found
@@ -21,6 +24,7 @@ API --> Client: 200 Ok \n Expense {...}
 else expense not exist
 API --> Client: 404 Not Found
 deactivate API
+end
 end
 
 @enduml

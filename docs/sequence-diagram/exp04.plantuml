@@ -7,11 +7,15 @@ database Database
 
 Client -> API: [GET] /api/expenses
 activate API
+alt Unauthorized
+API --> Client: 401 Unauthorized
+else Authorized
 API -> Database: execute query SQL for expense
 activate Database
 Database --> API: expense result
 deactivate Database
 API --> Client: 200 Ok \n Expenses {[{...}]...}
 deactivate API
+end
 
 @enduml
