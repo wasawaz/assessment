@@ -1,3 +1,6 @@
+[![CI](https://github.com/tj-actions/coverage-badge-go/workflows/CI/badge.svg)](https://github.com/tj-actions/coverage-badge-go/actions?query=workflow%3ACI)
+[![Coverage Status](https://coveralls.io/repos/github/wasawaz/assessment/badge.svg?branch=main)](https://coveralls.io/github/wasawaz/assessment?branch=main)
+
 # Expense Tracking API
 
 GoLang REST API. Responsibility for CRUD expense transaction from authorize client.

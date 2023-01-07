@@ -41,7 +41,7 @@ func TestExpense(t *testing.T) {
 		wrappedHandler := expense_middleware.AuthMiddleware(h.CreateExpense)
 
 		// Arrange
-		err := wrappedHandler(c)
+		err = wrappedHandler(c)
 
 		// Assertions
 		if assert.NoError(t, err) {
@@ -69,8 +69,12 @@ func TestExpense(t *testing.T) {
 		getExpenseUsecase := usecase.NewGetExpenseUsecase(expenseRepository)
 		h := NewGetExpenseHandler(getExpenseUsecase)
 		wrappedHandler := expense_middleware.AuthMiddleware(h.GetExpense)
+
+		// Arrange
+		err = wrappedHandler(c)
+
 		// Assertions
-		if assert.NoError(t, wrappedHandler(c)) {
+		if assert.NoError(t, err) {
 			assert.Equal(t, http.StatusOK, rec.Code)
 		}
 	})
@@ -122,8 +126,12 @@ func TestExpense(t *testing.T) {
 		getAllExpenseUsecase := usecase.NewGetAllExpenseUsecase(expenseRepository)
 		h := NewGetAllExpenseHandler(getAllExpenseUsecase)
 		wrappedHandler := expense_middleware.AuthMiddleware(h.GetAllExpense)
+
+		// Arrange
+		err = wrappedHandler(c)
+
 		// Assertions
-		if assert.NoError(t, wrappedHandler(c)) {
+		if assert.NoError(t, err) {
 			assert.Equal(t, http.StatusOK, rec.Code)
 		}
 	})
