@@ -69,4 +69,4 @@ jobs:
           tags: |
             ghcr.io/wasawaz/expenses-api:${{ env.GITHUB_SHA }}
           # build on feature branches, push only on main branch
-          push: true
+          push: ${{ github.ref == 'refs/heads/main' }}
